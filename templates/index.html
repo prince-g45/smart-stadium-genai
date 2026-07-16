@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stadium Assistant — FIFA World Cup 2026</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div>
+                <h1>Stadium Assistant</h1>
+                <p>Fan support system — FIFA World Cup 2026</p>
+            </div>
+            <button id="theme-toggle" type="button" aria-label="Toggle dark or light mode">
+                <span id="theme-label">Light mode</span>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <section aria-label="Stadium and gate status" class="gates-panel">
+            <h2>Stadium</h2>
+            <label for="stadium-select" class="visually-hidden">Select stadium</label>
+            <select id="stadium-select" aria-label="Select stadium" data-current="{{ current_stadium_id }}">
+                {% for s in stadiums %}
+                <option value="{{ s.id }}" {% if s.id == current_stadium_id %}selected{% endif %}>
+                    {{ s.name }} — {{ s.city }}
+                </option>
+                {% endfor %}
+            </select>
+
+            <h2 class="section-spacing">Gate Status</h2>
+            <ul id="gate-list">
+                {% for gate, status in gates.items() %}
+                <li>
+                    <span class="gate-name">{{ gate }}</span>
+                    <span class="gate-status status-{{ status|replace(' ', '-')|lower }}">{{ status }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+        </section>
+
+        <section aria-label="Chat with Stadium Assistant" class="chat-panel">
+            <div class="chat-header">
+                <h2>Ask a Question</h2>
+                <div class="chat-controls">
+                    <label for="lang-select" class="lang-label">Language</label>
+                    <select id="lang-select" aria-label="Preferred language">
+                        <option value="English">English</option>
+                        <option value="Hindi">Hindi</option>
+                        <option value="Spanish">Spanish</option>
+                        <option value="French">French</option>
+                        <option value="Portuguese">Portuguese</option>
+                        <option value="Arabic">Arabic</option>
+                    </select>
+                    <button id="new-chat" type="button">New chat</button>
+                </div>
+            </div>
+
+            <div id="chat-window" role="log" aria-live="polite">
+                <div class="bot-message">
+                    Hello. I can help with gates, food, restrooms, medical points,
+                    accessibility, and transport. What do you need?
+                </div>
+            </div>
+
+            <div id="typing-indicator" class="typing-indicator" hidden aria-hidden="true">
+                Assistant is typing<span class="dots"><span>.</span><span>.</span><span>.</span></span>
+            </div>
+
+            <form id="chat-form" aria-label="Chat input form">
+                <label for="user-input" class="visually-hidden">Type your question</label>
+                <input
+                    type="text"
+                    id="user-input"
+                    placeholder="e.g. Where is the nearest washroom?"
+                    autocomplete="off"
+                    maxlength="500"
+                    required
+                />
+                <button id="mic-btn" type="button" aria-label="Voice input" title="Voice input">Mic</button>
+                <button type="submit">Send</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>FIFA World Cup 2026 — Smart Stadiums &amp; Tournament Operations</p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
