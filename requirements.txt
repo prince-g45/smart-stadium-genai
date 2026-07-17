@@ -3,3 +3,4 @@ anthropic
 python-dotenv
 pytest
 flask-limiter
+gunicorn
